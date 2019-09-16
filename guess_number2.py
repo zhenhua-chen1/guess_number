@@ -5,6 +5,14 @@ Created on Sun Sep  1 14:22:12 2019
 @author: 82548
 """
 
+"""读取上次游戏文件"""
+f = open('output.txt')
+data=f.read()
+f.close
+data=data.split()
+data_dict={data[0]:data[1:4]}
+
+
 """ 游戏准备 """
 from random import randint
 number=randint(1, 100)          #随机生成游戏数字
@@ -13,7 +21,13 @@ count=0                         #单次游戏进行轮数
 all_count=0                     #游戏进行总轮数
 min_count=10000000000           #单次游戏最小轮数
 answer=101                      #玩家输入答案
-name=input("请输入你的名字：")   #玩家输入名字
+for key in data_dict:           #提取文件数据          
+    name=key                    #玩家输入名字
+    turn=eval(data_dict['阿花'][0])
+    min_count=eval(data_dict['阿花'][1])
+    average_count=eval(data_dict['阿花'][2])
+all_count=int(average_count*turn)
+print("{},你已经玩了{}次，最少{}轮猜出，平均{:.2f}轮猜出".format(name,turn,min_count,average_count))
 
 """ 开始游戏 """
 while answer!=number:
@@ -40,7 +54,7 @@ while answer!=number:
             print("退出游戏，欢迎下次再来!")
             
 """ 写入文件 """  
-data="{},你已经玩了{}次，最少{}轮猜出，平均{:.2f}轮猜出".format(name,turn,min_count,average_count)        
+data="{} {} {} {:.2f}".format(name,turn,min_count,average_count)        
 f = open('output.txt', 'w')
 f.write(data)
 f.close()
